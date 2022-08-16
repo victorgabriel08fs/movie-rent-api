@@ -4,31 +4,41 @@ import { MovieRent } from '@prisma/client';
 import { CreateMovieRentDTO } from '../../dtos/CreateMovieRentDTO';
 
 export class CreateMovieRentUseCase {
-    async execute({ userId, movieId }: CreateMovieRentDTO): Promise<MovieRent> {
-        const movieAlreadyExist = prisma.movie.findUnique({
+    async execute({ userId, movieId }: CreateMovieRentDTO): Promise<void> {
+        const movieAlreadyExist = await prisma.movie.findUnique({
             where: {
                 id: movieId
             }
         })
-        const userAlreadyExist = prisma.user.findUnique({
+        const userAlreadyExist = await prisma.user.findUnique({
             where: {
                 id: userId
             }
         })
+        const movieRentAlreadyExist = await prisma.movieRent.findFirst({
+            where: {
+                movieId
+            }
+        })
 
-        if (!movieAlreadyExist && !userAlreadyExist) {
-            throw new AppError("Fail, user or movie does not exists!");
-        }
-        if (!movieAlreadyExist && !userAlreadyExist) {
-            throw new AppError("Movie already exists rented by user!");
+
+        if (!movieAlreadyExist) {
+            throw new AppError("Movie does not exists!");
         }
 
-        const rent = prisma.movieRent.create({
+        if (!userAlreadyExist) {
+            throw new AppError("User does not exists!");
+        }
+
+        if (movieRentAlreadyExist) {
+            throw new AppError("Movie it's already rented!");
+        }
+
+        await prisma.movieRent.create({
             data: {
                 userId, movieId
             }
         });
 
-        return rent;
     }
 }

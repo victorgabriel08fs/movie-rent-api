@@ -7,8 +7,8 @@ export class CreateMovieRentController {
 
         const createMovieRentUseCase = new CreateMovieRentUseCase();
 
-        const result = await createMovieRentUseCase.execute({ userId, movieId });
+        await createMovieRentUseCase.execute({ userId, movieId });
 
-        return res.status(200).json(result);
+        return res.status(200).send();
     }
 }
