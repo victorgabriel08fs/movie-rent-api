@@ -3,7 +3,7 @@ import {Movie} from '@prisma/client';
 import { ListMoviesUseCase } from "./ListMoviesUseCase";
 
 export class ListMoviesController{
-    async handle(req:Request,res:Response):Promise<Movie>{
+    async handle(req:Request,res:Response):Promise<any>{
         const listMoviesUseCase = new ListMoviesUseCase();
 
         const result = await listMoviesUseCase.execute();

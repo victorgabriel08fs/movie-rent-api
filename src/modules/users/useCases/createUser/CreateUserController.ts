@@ -1,8 +1,9 @@
+import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 export class CreateUserController {
-    async handle(req: Request, res: Response) {
+    async handle(req: Request, res: Response): Promise<any> {
         const { name, email } = req.body;
 
         const createUserUseCase = new CreateUserUseCase();

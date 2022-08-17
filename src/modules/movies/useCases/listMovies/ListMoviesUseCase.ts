@@ -1,8 +1,8 @@
 import { AppError } from "../../../../erros/AppError";
 import { prisma } from "../../../../prisma/client";
-
+import { Movie } from "@prisma/client";
 export class ListMoviesUseCase {
-    async execute() {
+    async execute(): Promise<Movie[]> {
         const movies = await prisma.movie.findMany();
 
         if (!movies) {
