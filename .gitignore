@@ -1,7 +1,7 @@
 /node_modules
 
 /package-lock.json
-/.env
+.env
 now.json
 # Local Netlify folder
 .netlify
