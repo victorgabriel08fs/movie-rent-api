@@ -1,6 +1,6 @@
 import { prisma } from "../../../../prisma/client";
 import { User } from "@prisma/client";
-import { CreateUserDTO } from "../../dtos/createUserDTO";
+import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 import { AppError } from "../../../../erros/AppError";
 
 export class CreateUserUseCase {
