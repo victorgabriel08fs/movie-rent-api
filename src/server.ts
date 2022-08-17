@@ -23,6 +23,6 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
     })
 })
 
-app.listen(3000, () => {
-    console.log("Servidor rodando na porta 30000");
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Servidor rodando");
 })
