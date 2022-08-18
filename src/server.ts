@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(routes);
+app.use('/api/v1',routes);
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {
