@@ -33,13 +33,13 @@ model Movie {
 
 model MovieRent {
   id         String   @id @default(uuid())
-  userId     String
-  movieId    String
+  userId     String?
+  movieId    String?
   status     Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user       User     @relation("user", fields: [userId], references: [id])
-  movie      Movie    @relation("movie", fields: [movieId], references: [id])
+  user       User?     @relation("user", fields: [userId], references: [id])
+  movie      Movie?    @relation("movie", fields: [movieId], references: [id])
 
   @@map("movie_rent")
 }

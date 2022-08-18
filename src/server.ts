@@ -24,5 +24,5 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
 })
 
 app.listen(process.env.PORT, () => {
-    console.log("Servidor rodando");
+    console.log("Servidor rodando na porta "+process.env.PORT);
 })
