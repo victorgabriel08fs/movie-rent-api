@@ -11,9 +11,11 @@ model User {
   id         String      @id @default(uuid())
   email      String      @unique
   name       String
+  password   String
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
-  movie_rent MovieRent[] @relation("user")
+  movie_rent MovieRent[] @relation("client")
+  session   Session[]   @relation("user")
 
   @@map("users")
 }
@@ -38,8 +40,19 @@ model MovieRent {
   status     Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user       User?     @relation("user", fields: [userId], references: [id])
-  movie      Movie?    @relation("movie", fields: [movieId], references: [id])
+  movie      Movie?   @relation("movie", fields: [movieId], references: [id])
+  client       User?    @relation("client", fields: [userId], references: [id])
 
   @@map("movie_rent")
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  userId     String?
+  status     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user      User?    @relation("user", fields: [userId], references: [id])
+
+  @@map("sessions")
 }

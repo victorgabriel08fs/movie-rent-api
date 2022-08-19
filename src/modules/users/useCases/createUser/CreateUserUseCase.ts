@@ -4,7 +4,7 @@ import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 import { AppError } from "../../../../erros/AppError";
 
 export class CreateUserUseCase {
-    async execute({ name, email }: CreateUserDTO): Promise<User> {
+    async execute({ name, email, password }: CreateUserDTO): Promise<User> {
         //verifica existência do usuário
 
         const userAlreadyExists = await prisma.user.findUnique({
@@ -19,7 +19,7 @@ export class CreateUserUseCase {
         //cria usuário
         const user = await prisma.user.create({
             data: {
-                name, email
+                name, email, password
             }
         });
 
