@@ -11,6 +11,6 @@ const userRoutes = Router();
 
 userRoutes.post("/", createUserController.handle);
 userRoutes.get("/", listUsersController.handle);
-userRoutes.delete("/", deleteUserController.handle);
+userRoutes.delete("/:id", deleteUserController.handle);
 
 export { userRoutes };

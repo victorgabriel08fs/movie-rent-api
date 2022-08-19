@@ -14,6 +14,6 @@ const findMovieController = new FindMovieController();
 movieRoutes.post("/", createMovieController.handle);
 movieRoutes.get("/", listMoviesController.handle);
 movieRoutes.get("/:title", findMovieController.handle);
-movieRoutes.delete("/", deleteMovieController.handle);
+movieRoutes.delete("/:id", deleteMovieController.handle);
 
 export { movieRoutes };

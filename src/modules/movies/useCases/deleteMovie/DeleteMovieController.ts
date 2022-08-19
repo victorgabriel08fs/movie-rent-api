@@ -5,7 +5,7 @@ export class DeleteMovieController {
     async handle(req: Request, res: Response) {
         const deleteMovieUseCase = new DeleteMovieUseCase();
 
-        const { id } = req.body;
+        const { id } = req.params;
 
         const result = await deleteMovieUseCase.execute({ id });
 
