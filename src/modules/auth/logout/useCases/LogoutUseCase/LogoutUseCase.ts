@@ -1,6 +1,8 @@
 import { prisma } from "../../../../../prisma/client";
 import { AppError } from "../../../../../erros/AppError";
 import { LogoutDTO } from "../../dtos/LogoutDTO";
+import moment from "moment";
+
 
 export class LogoutUseCase {
     async execute({ id }: LogoutDTO): Promise<boolean> {
@@ -17,21 +19,15 @@ export class LogoutUseCase {
             throw new AppError("Error");
         }
 
-        const now = new Date();
-        const difference = (lastSession.getTime() - now.getTime()) / 60000;
+        await prisma.session.update({
+            data: {
+                status: false
+            },
+            where: {
+                id: lastSession.id
+            }
+        });
 
-        if (difference > 40) {
-            await prisma.session.update({
-                data: {
-                    status: false
-                },
-                where: {
-                    id: lastSession.id
-                }
-            });
-
-            throw new AppError("Session expired");
-        }
 
         return true;
     }

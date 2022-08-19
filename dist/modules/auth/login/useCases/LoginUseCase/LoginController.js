@@ -36,28 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.LoginController = void 0;
+var LoginUseCase_1 = require("./LoginUseCase");
+var LoginController = /** @class */ (function () {
+    function LoginController() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    LoginController.prototype.handle = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
+            var _a, email, password, loginUseCase, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                        _a = req.body, email = _a.email, password = _a.password;
+                        loginUseCase = new LoginUseCase_1.LoginUseCase();
+                        return [4 /*yield*/, loginUseCase.execute({ email: email, password: password })];
                     case 1:
                         result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        if (result) {
+                            return [2 /*return*/, res.status(200).json({
+                                    token: result.id
+                                })];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateUserController;
+    return LoginController;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.LoginController = LoginController;
+//# sourceMappingURL=LoginController.js.map

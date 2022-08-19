@@ -35,17 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-exports.CreateUserUseCase = void 0;
-var client_1 = require("../../../../prisma/client");
-var AppError_1 = require("../../../../erros/AppError");
-var CreateUserUseCase = /** @class */ (function () {
-    function CreateUserUseCase() {
+exports.LoginUseCase = void 0;
+var AppError_1 = require("../../../../../erros/AppError");
+var client_1 = require("../../../../../prisma/client");
+var moment_1 = __importDefault(require("moment"));
+var LoginUseCase = /** @class */ (function () {
+    function LoginUseCase() {
     }
-    CreateUserUseCase.prototype.execute = function (_a) {
-        var name = _a.name, email = _a.email, password = _a.password;
+    LoginUseCase.prototype.execute = function (_a) {
+        var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var userAlreadyExists, user;
+            var user, lastSession, now, sessionDate, difference, minutes, session;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, client_1.prisma.user.findUnique({
@@ -54,25 +58,58 @@ var CreateUserUseCase = /** @class */ (function () {
                             }
                         })];
                     case 1:
-                        userAlreadyExists = _b.sent();
-                        if (userAlreadyExists) {
-                            throw new AppError_1.AppError("User already exists!");
+                        user = _b.sent();
+                        if (!user) {
+                            throw new AppError_1.AppError("User does not exists");
                         }
-                        return [4 /*yield*/, client_1.prisma.user.create({
-                                data: {
-                                    name: name,
-                                    email: email,
-                                    password: password
+                        return [4 /*yield*/, client_1.prisma.session.findFirst({
+                                where: {
+                                    userId: user.id
+                                },
+                                orderBy: {
+                                    created_at: 'desc'
                                 }
                             })];
                     case 2:
-                        user = _b.sent();
-                        return [2 /*return*/, user];
+                        lastSession = _b.sent();
+                        if (!lastSession) return [3 /*break*/, 5];
+                        if (!lastSession.status) {
+                            throw new AppError_1.AppError("Session expired");
+                        }
+                        now = new Date();
+                        sessionDate = new Date(lastSession.created_at);
+                        difference = (0, moment_1["default"])(now).diff((0, moment_1["default"])(sessionDate));
+                        minutes = moment_1["default"].duration(difference).asMinutes();
+                        if (!(minutes > 40)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, client_1.prisma.session.update({
+                                data: {
+                                    status: false
+                                },
+                                where: {
+                                    id: lastSession.id
+                                }
+                            })];
+                    case 3:
+                        _b.sent();
+                        throw new AppError_1.AppError("Session expired");
+                    case 4: return [2 /*return*/, lastSession];
+                    case 5:
+                        if (user.password != password) {
+                            throw new AppError_1.AppError("User or password invalids");
+                        }
+                        return [4 /*yield*/, client_1.prisma.session.create({
+                                data: {
+                                    userId: user.id
+                                }
+                            })];
+                    case 6:
+                        session = _b.sent();
+                        return [2 /*return*/, session];
                 }
             });
         });
     };
-    return CreateUserUseCase;
+    return LoginUseCase;
 }());
-exports.CreateUserUseCase = CreateUserUseCase;
-//# sourceMappingURL=CreateUserUseCase.js.map
+exports.LoginUseCase = LoginUseCase;
+//# sourceMappingURL=LoginUseCase.js.map

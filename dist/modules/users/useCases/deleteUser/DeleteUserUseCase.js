@@ -36,28 +36,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.DeleteUserUseCase = void 0;
+var AppError_1 = require("../../../../erros/AppError");
+var client_1 = require("../../../../prisma/client");
+var DeleteUserUseCase = /** @class */ (function () {
+    function DeleteUserUseCase() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    DeleteUserUseCase.prototype.execute = function (_a) {
+        var id = _a.id;
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
+            var user;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                    case 0: return [4 /*yield*/, client_1.prisma.user.findUnique({
+                            where: {
+                                id: id
+                            }
+                        })];
                     case 1:
-                        result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        user = _b.sent();
+                        if (!user) {
+                            throw new AppError_1.AppError("User does not exists!");
+                        }
+                        return [4 /*yield*/, client_1.prisma.user["delete"]({
+                                where: {
+                                    id: id
+                                }
+                            })];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/, true];
                 }
             });
         });
     };
-    return CreateUserController;
+    return DeleteUserUseCase;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.DeleteUserUseCase = DeleteUserUseCase;
+//# sourceMappingURL=DeleteUserUseCase.js.map

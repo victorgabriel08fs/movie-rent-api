@@ -36,28 +36,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.DeleteMovieController = void 0;
+var DeleteMovieUseCase_1 = require("./DeleteMovieUseCase");
+var DeleteMovieController = /** @class */ (function () {
+    function DeleteMovieController() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    DeleteMovieController.prototype.handle = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var deleteMovieUseCase, id, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                        deleteMovieUseCase = new DeleteMovieUseCase_1.DeleteMovieUseCase();
+                        id = req.params.id;
+                        return [4 /*yield*/, deleteMovieUseCase.execute({ id: id })];
                     case 1:
-                        result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        result = _a.sent();
+                        if (result) {
+                            return [2 /*return*/, res.status(200).json({ deleted: true })];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateUserController;
+    return DeleteMovieController;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.DeleteMovieController = DeleteMovieController;
+//# sourceMappingURL=DeleteMovieController.js.map

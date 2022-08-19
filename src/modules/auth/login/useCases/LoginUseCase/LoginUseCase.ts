@@ -2,6 +2,7 @@ import { AppError } from "../../../../../erros/AppError";
 import { prisma } from "../../../../../prisma/client";
 import { LoginDTO } from "../../dtos/LoginDTO";
 import { Session } from "@prisma/client";
+import moment from "moment";
 
 export class LoginUseCase {
     async execute({ email, password }: LoginDTO): Promise<Session> {
@@ -32,9 +33,13 @@ export class LoginUseCase {
             }
 
             const now = new Date();
-            const difference = (lastSession.created_at.getTime() - now.getTime()) / 60000;
 
-            if (difference > 40) {
+            const sessionDate = new Date(lastSession.created_at);
+
+            const difference = moment(now).diff(moment(sessionDate));
+
+            const minutes = moment.duration(difference).asMinutes();
+            if (minutes > 40) {
                 await prisma.session.update({
                     data: {
                         status: false
@@ -45,6 +50,8 @@ export class LoginUseCase {
                 });
 
                 throw new AppError("Session expired");
+            }else{
+                return lastSession;
             }
 
         }

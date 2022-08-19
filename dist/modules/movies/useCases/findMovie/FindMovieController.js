@@ -36,28 +36,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.FindMovieController = void 0;
+var FindMovieUseCase_1 = require("./FindMovieUseCase");
+var FindMovieController = /** @class */ (function () {
+    function FindMovieController() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    FindMovieController.prototype.handle = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var findMovieUseCase, title, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                        findMovieUseCase = new FindMovieUseCase_1.FindMovieUseCase();
+                        title = req.params.title;
+                        return [4 /*yield*/, findMovieUseCase.execute({ title: title })];
                     case 1:
-                        result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(200).json(result)];
                 }
             });
         });
     };
-    return CreateUserController;
+    return FindMovieController;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.FindMovieController = FindMovieController;
+//# sourceMappingURL=FindMovieController.js.map

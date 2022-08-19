@@ -36,28 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.LogoutController = void 0;
+var LogoutUseCase_1 = require("./LogoutUseCase");
+var LogoutController = /** @class */ (function () {
+    function LogoutController() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    LogoutController.prototype.handle = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var id, logoutUseCase, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                        id = req.body.id;
+                        logoutUseCase = new LogoutUseCase_1.LogoutUseCase();
+                        return [4 /*yield*/, logoutUseCase.execute({ id: id })];
                     case 1:
-                        result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        result = _a.sent();
+                        if (result) {
+                            return [2 /*return*/, res.status(200).json({
+                                    logout: true
+                                })];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateUserController;
+    return LogoutController;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.LogoutController = LogoutController;
+//# sourceMappingURL=LogoutController.js.map

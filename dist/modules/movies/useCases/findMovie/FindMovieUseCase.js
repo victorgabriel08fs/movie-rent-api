@@ -36,28 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CreateUserController = void 0;
-var CreateUserUseCase_1 = require("./CreateUserUseCase");
-var CreateUserController = /** @class */ (function () {
-    function CreateUserController() {
+exports.FindMovieUseCase = void 0;
+var AppError_1 = require("../../../../erros/AppError");
+var client_1 = require("../../../../prisma/client");
+var FindMovieUseCase = /** @class */ (function () {
+    function FindMovieUseCase() {
     }
-    CreateUserController.prototype.handle = function (req, res) {
+    FindMovieUseCase.prototype.execute = function (_a) {
+        var title = _a.title;
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, password, createUserUseCase, result;
+            var movie;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                        createUserUseCase = new CreateUserUseCase_1.CreateUserUseCase();
-                        return [4 /*yield*/, createUserUseCase.execute({ name: name, email: email, password: password })];
+                    case 0: return [4 /*yield*/, client_1.prisma.movie.findFirst({
+                            where: {
+                                title: title
+                            }
+                        })];
                     case 1:
-                        result = _b.sent();
-                        return [2 /*return*/, res.status(201).json(result)];
+                        movie = _b.sent();
+                        if (!movie) {
+                            throw new AppError_1.AppError("Movie not founded!");
+                        }
+                        return [2 /*return*/, movie];
                 }
             });
         });
     };
-    return CreateUserController;
+    return FindMovieUseCase;
 }());
-exports.CreateUserController = CreateUserController;
-//# sourceMappingURL=CreateUserController.js.map
+exports.FindMovieUseCase = FindMovieUseCase;
+//# sourceMappingURL=FindMovieUseCase.js.map

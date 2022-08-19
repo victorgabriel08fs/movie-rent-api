@@ -9,7 +9,7 @@ var routes_1 = require("./routes");
 var AppError_1 = require("./erros/AppError");
 var app = (0, express_1["default"])();
 app.use(express_1["default"].json());
-app.use(routes_1.routes);
+app.use('/api/v1', routes_1.routes);
 app.use(function (err, request, response, next) {
     if (err instanceof AppError_1.AppError) {
         return response.status(err.statusCode).json({
@@ -23,6 +23,6 @@ app.use(function (err, request, response, next) {
     });
 });
 app.listen(process.env.PORT, function () {
-    console.log("Servidor rodando");
+    console.log("Servidor rodando na porta " + process.env.PORT);
 });
 //# sourceMappingURL=server.js.map
