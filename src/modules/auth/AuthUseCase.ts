@@ -1,11 +1,13 @@
-import { AppError } from "../../../../../erros/AppError";
-import { prisma } from "../../../../../prisma/client";
-import { LoginDTO } from "../../dtos/LoginDTO";
 import { Session } from "@prisma/client";
+import { AppError } from "../../erros/AppError";
+import { prisma } from "../../prisma/client";
+import { LoginDTO } from "./dtos/LoginDTO";
 import moment from "moment";
+import { LogoutDTO } from "./dtos/LogoutDTO";
 
-export class LoginUseCase {
-    async execute({ email, password }: LoginDTO): Promise<Session> {
+
+export class AuthUseCase {
+    async login({ email, password }: LoginDTO): Promise<Session> {
 
         const user = await prisma.user.findUnique({
             where: {
@@ -50,7 +52,7 @@ export class LoginUseCase {
                 });
 
                 throw new AppError("Session expired");
-            }else{
+            } else {
                 return lastSession;
             }
 
@@ -67,5 +69,32 @@ export class LoginUseCase {
         });
 
         return session;
+    }
+
+    async logout({ id }: LogoutDTO): Promise<boolean> {
+        const lastSession = await prisma.session.findFirst({
+            where: {
+                userId: id
+            },
+            orderBy: {
+                created_at: 'desc'
+            }
+        });
+
+        if (!lastSession || !lastSession.status) {
+            throw new AppError("Error");
+        }
+
+        await prisma.session.update({
+            data: {
+                status: false
+            },
+            where: {
+                id: lastSession.id
+            }
+        });
+
+
+        return true;
     }
 }

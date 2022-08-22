@@ -1,13 +1,11 @@
 import { Router } from "express";
-import { LogoutController } from "../modules/auth/logout/useCases/LogoutUseCase/LogoutController";
-import { LoginController } from "../modules/auth/login/useCases/LoginUseCase/LoginController";
+import { AuthController } from "modules/auth/AuthController";
 
 const authRoutes = Router();
 
-const loginController = new LoginController();
-const logoutController = new LogoutController();
+const authController = new AuthController();
 
-authRoutes.post("/login", loginController.handle);
-authRoutes.post("/logout", logoutController.handle);
+authRoutes.post("/login", authController.login);
+authRoutes.post("/logout", authController.logout);
 
 export { authRoutes };
