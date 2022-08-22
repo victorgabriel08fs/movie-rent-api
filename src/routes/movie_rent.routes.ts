@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { CreateMovieRentController } from "../modules/movieRents/useCases/createMovieRent/CreateMovieRentController";
-import { GiveBackMovieRentController } from "../modules/movieRents/useCases/giveBackMovieRent/GiveBackMovieRentController";
+import { MovieRentController } from "../modules/movieRents/MovieRentController";
+
+const movieRentController = new MovieRentController();
 
 const movieRentsRoutes = Router();
 
-const createMovieRentController = new CreateMovieRentController();
-const giveBackMovieRentController = new GiveBackMovieRentController();
 
-movieRentsRoutes.post("/", createMovieRentController.handle);
-movieRentsRoutes.patch("/giveBack", giveBackMovieRentController.handle);
+movieRentsRoutes.post("/", movieRentController.create);
+movieRentsRoutes.patch("/giveBack", movieRentController.giveBack);
 
 export { movieRentsRoutes };
