@@ -29,4 +29,15 @@ export class UserController {
 
         return res.status(200).json(result);
     }
+
+    async find(req: Request, res: Response): Promise<any> {
+        const userUseCase = new UserUseCase();
+
+        const { id } = req.params;
+
+        const result = await userUseCase.find({ id });
+
+        return res.status(200).json(result);
+    }
+
 }

@@ -3,6 +3,7 @@ import { AppError } from "../../erros/AppError";
 import { prisma } from "../../prisma/client";
 import { CreateUserDTO } from "./dtos/CreateUserDTO";
 import { DeleteUserDTO } from "./dtos/DeleteUserDTO";
+import { FindUserDTO } from "./dtos/FindUserDTO";
 
 export class UserUseCase {
     async create({ name, email, password }: CreateUserDTO): Promise<User> {
@@ -56,4 +57,19 @@ export class UserUseCase {
 
         return users;
     }
+
+    async find({ id }: FindUserDTO): Promise<User> {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        });
+
+        if (!user) {
+            throw new AppError("User does not exists");
+        }
+
+        return user;
+    }
+
 }
